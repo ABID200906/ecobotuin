@@ -7,82 +7,84 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
             -webkit-tap-highlight-color: transparent;
+            background-color: #f8fafc;
+            background-image: radial-gradient(circle at top right, #ecfdf5, transparent 40%), 
+                              radial-gradient(circle at bottom left, #f0fdf4, transparent 40%);
         }
 
         .tab-content { display: none; }
         .tab-content.active { 
             display: block; 
-            animation: fadeIn 0.4s ease-out;
+            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .active-nav {
-            color: #059669; /* emerald-600 */
-        }
-
+        .active-nav { color: #059669; }
         .desktop-nav-active {
-            background-color: #ecfdf5; /* emerald-50 */
+            background: rgba(16, 185, 129, 0.1);
             color: #059669;
+            backdrop-filter: blur(8px);
         }
 
-        @media (max-width: 767px) {
-            .bottom-nav-shadow {
-                box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.08);
-            }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         }
 
-        .count-up {
-            animation: pop 0.3s ease-out;
+        .glass-panel-dark {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
+
+        .count-up { animation: pop 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
         @keyframes pop {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); color: #10b981; }
+            50% { transform: scale(1.25); color: #34d399; }
             100% { transform: scale(1); }
         }
 
-        #activity-logs::-webkit-scrollbar {
-            width: 4px;
-        }
-        #activity-logs::-webkit-scrollbar-thumb {
-            background: #e2e8f0;
-            border-radius: 10px;
-        }
+        #activity-logs::-webkit-scrollbar { width: 4px; }
+        #activity-logs::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 pb-20 md:pb-0">
+<body class="text-slate-900 pb-20 md:pb-0 min-h-screen">
 
     <!-- Header & Desktop Nav -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100 shadow-sm">
+    <header class="bg-white/70 backdrop-blur-xl sticky top-0 z-40 border-b border-white shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="bg-white p-1 rounded-xl shadow-md border border-gray-100">
-                    <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold">EB</div>
-                </div>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center text-white font-black shadow-lg shadow-emerald-200">EB</div>
                 <div>
-                    <h1 class="text-xs font-bold text-emerald-600 uppercase tracking-widest leading-none mb-1">EcoBot Project</h1>
-                    <p id="real-time-clock" class="text-xl font-bold leading-none">00:00:00</p>
+                    <h1 class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] mb-0.5">EcoBot System</h1>
+                    <p id="real-time-clock" class="text-xl font-bold leading-none tracking-tight text-slate-800">00:00:00</p>
                 </div>
             </div>
             
-            <nav class="hidden md:flex items-center gap-2">
-                <button onclick="switchTab('home')" class="desktop-nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all desktop-nav-active" id="d-nav-home">Beranda</button>
-                <button onclick="switchTab('user')" class="desktop-nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:bg-gray-50" id="d-nav-user">Jadwal Warga</button>
-                <button onclick="switchTab('admin')" class="desktop-nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:bg-gray-50" id="d-nav-admin">Panel Monitoring</button>
+            <nav class="hidden md:flex items-center gap-1 bg-slate-100/50 p-1 rounded-2xl border border-white">
+                <button onclick="switchTab('home')" class="desktop-nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all desktop-nav-active" id="d-nav-home">Beranda</button>
+                <button onclick="switchTab('user')" class="desktop-nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-white/60" id="d-nav-user">Jadwal</button>
+                <button onclick="switchTab('admin')" class="desktop-nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-white/60" id="d-nav-admin">Monitor</button>
             </nav>
 
-            <div class="flex items-center gap-3">
-                <div id="real-date" class="hidden lg:block text-xs font-medium text-gray-400 border-r pr-4 border-gray-200 mr-2">-- --- ----</div>
-                <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-700 font-bold border border-emerald-200">EB</div>
+            <div class="flex items-center gap-4">
+                <div id="real-date" class="hidden lg:block text-xs font-semibold text-slate-500 border-r pr-4 border-slate-200">-- --- ----</div>
+                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 border border-slate-200 hover:bg-slate-200 transition cursor-pointer">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                </div>
             </div>
         </div>
     </header>
@@ -91,129 +93,147 @@
         
         <!-- 1. Halaman Beranda -->
         <section id="home" class="tab-content active space-y-8">
-            <div class="grid lg:grid-cols-2 gap-8 items-center">
-                <div class="space-y-6 order-2 lg:order-1">
-                    <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                        <i data-lucide="sparkles" class="w-3 h-3"></i> Kompetisi Ecobot UIN 2026
+            <div class="grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
+                <div class="space-y-8 order-2 lg:order-1">
+                    <div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-700 px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-widest shadow-sm">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> Kompetisi Ecobot UIN 2026
                     </div>
-                    <h2 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">
-                        Wujudkan Kota <span class="text-emerald-600 underline decoration-emerald-200 underline-offset-8">Bersih</span> Secara Otomatis
+                    <h2 class="text-5xl md:text-7xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
+                        Wujudkan Kota <span class="text-emerald-600">Bersih</span> Secara Otomatis
                     </h2>
-                    <p class="text-gray-500 text-lg md:max-w-md">
+                    <p class="text-slate-500 text-lg md:text-xl leading-relaxed md:max-w-lg font-medium">
                         Truk sampah pintar berbasis sensor yang dirancang untuk efisiensi pengumpulan limbah kota tanpa jeda.
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <button onclick="switchTab('admin')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-emerald-200 transition-all active:scale-95">
-                            Mulai Pantau
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <button onclick="switchTab('admin')" class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-slate-200 transition-all active:scale-95 flex items-center gap-3">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Mulai Pantau
                         </button>
                     </div>
                 </div>
                 
-                <div class="relative order-1 lg:order-2">
-                    <div class="bg-emerald-600 absolute -inset-2 rounded-[2rem] rotate-3 opacity-10"></div>
-                    <div class="relative bg-emerald-900 rounded-[2rem] overflow-hidden shadow-2xl aspect-video lg:aspect-square">
-                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover opacity-70" alt="Smart City Cleanup">
-                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/80 to-transparent"></div>
+                <div class="relative order-1 lg:order-2 perspective-1000">
+                    <div class="absolute -inset-4 bg-gradient-to-tr from-emerald-400 to-teal-200 rounded-[3rem] rotate-6 opacity-20 blur-2xl"></div>
+                    <div class="relative glass-card rounded-[2.5rem] overflow-hidden aspect-[4/3] p-2">
+                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover rounded-[2rem]" alt="Smart City Cleanup">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent rounded-[2.5rem]"></div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- 2. Halaman Jadwal -->
-        <section id="user" class="tab-content space-y-6">
-            <h2 class="text-3xl font-bold text-gray-800 tracking-tight">Jadwal Penjemputan</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="schedule-list"></div>
+        <section id="user" class="tab-content space-y-8">
+            <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">Jadwal Penjemputan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="schedule-list"></div>
         </section>
 
         <!-- 3. Halaman Admin (Monitoring) -->
         <section id="admin" class="tab-content space-y-6">
-            <div class="grid lg:grid-cols-12 gap-6">
+            <div class="grid lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-4 space-y-6">
-                    <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden transition-all duration-500" id="admin-status-card">
+                    <div class="glass-panel-dark p-8 rounded-[2.5rem] text-white relative overflow-hidden transition-all duration-700 group" id="admin-status-card">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-blue-500/20 transition-colors duration-700"></div>
                         <div class="relative z-10">
-                            <div class="flex justify-between items-start mb-10">
+                            <div class="flex justify-between items-start mb-12">
                                 <div>
-                                    <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-1">Status Robot</p>
-                                    <h3 id="robot-status" class="text-3xl font-bold">Menghubungkan...</h3>
+                                    <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.2em] mb-2">Status Robot</p>
+                                    <h3 id="robot-status" class="text-3xl font-black tracking-tight drop-shadow-md">Menghubungkan...</h3>
                                 </div>
-                                <div id="connection-indicator" class="text-[10px] bg-white/10 px-2 py-1 rounded border border-white/20 font-mono">OFFLINE</div>
+                                <div id="connection-indicator" class="text-[10px] bg-white/10 px-3 py-1.5 rounded-lg border border-white/20 font-mono tracking-wider backdrop-blur-md">OFFLINE</div>
                             </div>
                             
-                            <div class="space-y-6">
-                                <div class="flex items-center gap-4">
-                                    <div class="p-3 bg-white/10 rounded-2xl">
-                                        <i data-lucide="navigation" class="w-6 h-6 text-emerald-400"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] text-gray-400 uppercase font-bold">Mode Aktif</p>
-                                        <p id="robot-mode" class="text-lg font-semibold">-</p>
+                            <div class="space-y-4">
+                                <div class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between backdrop-blur-sm">
+                                    <div class="flex items-center gap-4">
+                                        <div class="p-3 bg-slate-800 rounded-xl shadow-inner border border-white/5">
+                                            <i data-lucide="navigation" class="w-5 h-5 text-emerald-400"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Mode Aktif</p>
+                                            <p id="robot-mode" class="text-xl font-bold">-</p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
-                                    <p class="text-[10px] text-gray-400 uppercase font-bold mb-1">Tong Terangkut</p>
-                                    <div class="flex items-center gap-2">
-                                        <span id="bins-count" class="text-3xl font-black text-white">0</span>
-                                        <i data-lucide="package" class="w-5 h-5 text-emerald-400"></i>
+                                <div class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between backdrop-blur-sm">
+                                    <div>
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Tong Terangkut</p>
+                                        <div class="flex items-center gap-3">
+                                            <span id="bins-count" class="text-4xl font-black text-white drop-shadow-lg">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-emerald-500/20 rounded-2xl border border-emerald-500/30">
+                                        <i data-lucide="package" class="w-6 h-6 text-emerald-400"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                        <h4 class="font-bold text-gray-800 mb-4">Log Aktivitas</h4>
-                        <div class="space-y-4 max-h-[250px] overflow-y-auto pr-2" id="activity-logs"></div>
+                    <div class="glass-card p-6 rounded-[2rem]">
+                        <h4 class="font-bold text-slate-800 mb-5 flex items-center gap-2">
+                            <i data-lucide="history" class="w-4 h-4 text-slate-400"></i> Log Aktivitas
+                        </h4>
+                        <div class="space-y-3 max-h-[250px] overflow-y-auto pr-3" id="activity-logs"></div>
                     </div>
                 </div>
 
-                <!-- Bagian Visualisasi Sistem yang Diperbarui -->
-                <div class="lg:col-span-8 space-y-6">
-                    <div class="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm h-full flex flex-col">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                <!-- Visualisasi Sistem Glassmorphism -->
+                <div class="lg:col-span-8">
+                    <div class="glass-card p-2 rounded-[2.5rem] h-full flex flex-col">
+                        <div class="p-6 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
                             <div>
-                                <h4 class="font-bold text-lg text-gray-800">Visualisasi Sistem</h4>
-                                <p class="text-xs text-gray-400">Data sensor real-time dari Firebase</p>
+                                <h4 class="font-extrabold text-xl text-slate-800 tracking-tight">Visualisasi Sistem</h4>
+                                <p class="text-sm font-medium text-slate-500 mt-1">Data telemetri real-time</p>
                             </div>
-                            <span class="flex items-center gap-2 text-xs text-blue-600 font-bold bg-blue-50 px-3 py-1.5 rounded-full">
-                                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> LIVE SYSTEM
+                            <span class="flex items-center gap-2 text-xs text-blue-700 font-bold bg-blue-100/80 px-4 py-2 rounded-xl shadow-sm border border-blue-200 backdrop-blur-sm">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(37,99,235,0.8)]"></span> LIVE METRICS
                             </span>
                         </div>
                         
-                        <div class="flex-1 bg-slate-900 rounded-[2rem] border border-gray-800 relative flex flex-col p-6 min-h-[400px] overflow-hidden">
-                            <!-- Sensor Ultrasonik -->
-                            <div class="grid grid-cols-3 gap-4 mb-8">
-                                <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-                                    <p class="text-gray-400 text-[10px] uppercase font-bold mb-2">Sensor Kiri</p>
-                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
-                                        <div id="bar-kiri" class="h-full bg-blue-500 w-[0%] transition-all duration-500"></div>
+                        <div class="flex-1 glass-panel-dark rounded-[2rem] relative flex flex-col p-8 min-h-[450px] m-2 overflow-hidden">
+                            <!-- Background Grid Effect -->
+                            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:30px_30px] opacity-20"></div>
+
+                            <!-- Sensor Indikator Modern -->
+                            <div class="grid grid-cols-3 gap-6 mb-10 relative z-10">
+                                <div class="bg-slate-800/60 rounded-2xl p-4 text-center border border-white/5 backdrop-blur-md shadow-lg">
+                                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3">Sensor Kiri</p>
+                                    <div class="h-3 bg-slate-900 rounded-full overflow-hidden mb-3 shadow-inner border border-white/5">
+                                        <div id="bar-kiri" class="h-full bg-slate-500 w-[0%] transition-all duration-700 rounded-full"></div>
                                     </div>
-                                    <p id="val-kiri" class="text-white font-mono text-sm">0</p>
+                                    <p id="val-kiri" class="text-white font-black text-2xl font-mono">0</p>
                                 </div>
-                                <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-                                    <p class="text-gray-400 text-[10px] uppercase font-bold mb-2">Sensor Depan</p>
-                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
-                                        <div id="bar-depan" class="h-full bg-blue-500 w-[0%] transition-all duration-500"></div>
+                                <div class="bg-slate-800/60 rounded-2xl p-4 text-center border border-white/5 backdrop-blur-md shadow-lg">
+                                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3">Sensor Depan</p>
+                                    <div class="h-3 bg-slate-900 rounded-full overflow-hidden mb-3 shadow-inner border border-white/5">
+                                        <div id="bar-depan" class="h-full bg-slate-500 w-[0%] transition-all duration-700 rounded-full"></div>
                                     </div>
-                                    <p id="val-depan" class="text-white font-mono text-sm">0</p>
+                                    <p id="val-depan" class="text-white font-black text-2xl font-mono">0</p>
                                 </div>
-                                <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-                                    <p class="text-gray-400 text-[10px] uppercase font-bold mb-2">Sensor Kanan</p>
-                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
-                                        <div id="bar-kanan" class="h-full bg-blue-500 w-[0%] transition-all duration-500"></div>
+                                <div class="bg-slate-800/60 rounded-2xl p-4 text-center border border-white/5 backdrop-blur-md shadow-lg">
+                                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3">Sensor Kanan</p>
+                                    <div class="h-3 bg-slate-900 rounded-full overflow-hidden mb-3 shadow-inner border border-white/5">
+                                        <div id="bar-kanan" class="h-full bg-slate-500 w-[0%] transition-all duration-700 rounded-full"></div>
                                     </div>
-                                    <p id="val-kanan" class="text-white font-mono text-sm">0</p>
+                                    <p id="val-kanan" class="text-white font-black text-2xl font-mono">0</p>
                                 </div>
                             </div>
 
-                            <!-- Animasi Posisi / Status -->
-                            <div class="flex-1 relative flex items-center justify-center bg-slate-800/50 rounded-xl border border-white/5">
-                                <div class="absolute top-4 left-0 right-0 text-center">
-                                    <span id="vis-status-text" class="text-blue-400 font-mono text-sm uppercase tracking-widest animate-pulse">Menunggu Data...</span>
+                            <!-- Animasi Posisi -->
+                            <div class="flex-1 relative flex items-center justify-center bg-slate-900/50 rounded-2xl border border-white/5 shadow-inner overflow-hidden">
+                                <div class="absolute top-6 left-0 right-0 text-center">
+                                    <span id="vis-status-text" class="text-emerald-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse">Standby...</span>
                                 </div>
 
-                                <div id="vis-truck" class="w-24 h-24 bg-slate-700 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-700 transform border border-white/10">
-                                    <i data-lucide="truck" class="w-12 h-12 text-white"></i>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <!-- Ring Dekoratif -->
+                                    <div class="w-48 h-48 border border-white/5 rounded-full absolute animate-[spin_10s_linear_infinite]"></div>
+                                    <div class="w-64 h-64 border border-white/5 rounded-full absolute animate-[spin_15s_linear_infinite_reverse]"></div>
+                                </div>
+
+                                <div id="vis-truck" class="w-28 h-28 bg-slate-800 rounded-3xl shadow-2xl flex items-center justify-center transition-all duration-700 transform border border-white/10 relative z-10 backdrop-blur-md">
+                                    <i data-lucide="truck" class="w-12 h-12 text-slate-300 transition-colors duration-500" id="truck-icon"></i>
                                 </div>
                             </div>
                         </div>
@@ -224,16 +244,16 @@
     </main>
 
     <!-- Bottom Nav Mobile -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-100 px-8 py-4 pb-8 flex justify-between items-center z-50 bottom-nav-shadow">
-        <button onclick="switchTab('home')" class="nav-btn flex flex-col items-center gap-1.5 text-gray-400 active-nav" id="m-nav-home">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-white shadow-[0_-10px_40px_rgba(0,0,0,0.05)] px-6 py-3 pb-8 flex justify-around items-center z-50">
+        <button onclick="switchTab('home')" class="flex flex-col items-center gap-1 text-slate-400 active-nav p-2 rounded-xl transition" id="m-nav-home">
             <i data-lucide="home" class="w-6 h-6"></i>
             <span class="text-[10px] font-bold">Home</span>
         </button>
-        <button onclick="switchTab('user')" class="nav-btn flex flex-col items-center gap-1.5 text-gray-400" id="m-nav-user">
+        <button onclick="switchTab('user')" class="flex flex-col items-center gap-1 text-slate-400 p-2 rounded-xl transition" id="m-nav-user">
             <i data-lucide="calendar" class="w-6 h-6"></i>
             <span class="text-[10px] font-bold">Jadwal</span>
         </button>
-        <button onclick="switchTab('admin')" class="nav-btn flex flex-col items-center gap-1.5 text-gray-400" id="m-nav-admin">
+        <button onclick="switchTab('admin')" class="flex flex-col items-center gap-1 text-slate-400 p-2 rounded-xl transition" id="m-nav-admin">
             <i data-lucide="activity" class="w-6 h-6"></i>
             <span class="text-[10px] font-bold">Monitor</span>
         </button>
@@ -266,42 +286,50 @@
             const card = document.getElementById('admin-status-card');
             const indicator = document.getElementById('connection-indicator');
             
-            // Elemen Visualisasi
             const visTruck = document.getElementById('vis-truck');
             const visStatusText = document.getElementById('vis-status-text');
+            const truckIcon = document.getElementById('truck-icon');
 
             if (data) {
                 statusEl.textContent = data.current_status || "Standby";
                 modeEl.textContent = data.current_mode || "LF";
+                
                 indicator.textContent = "ONLINE";
-                indicator.classList.replace('bg-white/10', 'bg-blue-500/20');
+                indicator.className = "text-[10px] bg-emerald-500/20 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/30 font-mono tracking-wider backdrop-blur-md";
                 
                 if (data.current_status === 'AMBIL' || data.current_status === 'BUANG') {
-                    card.classList.replace('bg-slate-900', 'bg-blue-900');
+                    card.style.background = 'rgba(30, 58, 138, 0.85)';
                 } else {
-                    card.className = card.className.replace(/bg-\w+-900/, 'bg-slate-900');
+                    card.style.background = 'rgba(15, 23, 42, 0.85)';
                 }
                 
-                // Update Animasi Visualisasi
                 if (visTruck && visStatusText) {
                     visStatusText.textContent = `SYSTEM: ${data.current_status || 'STANDBY'}`;
+                    visStatusText.className = "text-blue-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse";
 
                     if (data.current_status === 'AMBIL') {
-                        visTruck.className = 'w-24 h-24 bg-blue-600 rounded-2xl shadow-[0_0_30px_rgba(37,99,235,0.4)] flex items-center justify-center transition-all duration-500 transform scale-110 border border-transparent';
+                        visTruck.className = 'w-28 h-28 bg-blue-600/90 rounded-3xl shadow-[0_0_50px_rgba(37,99,235,0.6)] flex items-center justify-center transition-all duration-500 transform scale-110 border border-blue-400/50 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-white';
                     } else if (data.current_status === 'BUANG') {
-                        visTruck.className = 'w-24 h-24 bg-yellow-600 rounded-2xl shadow-[0_0_30px_rgba(202,138,4,0.4)] flex items-center justify-center transition-all duration-500 transform -translate-y-4 border border-transparent';
+                        visTruck.className = 'w-28 h-28 bg-amber-600/90 rounded-3xl shadow-[0_0_50px_rgba(217,119,6,0.6)] flex items-center justify-center transition-all duration-500 transform -translate-y-4 border border-amber-400/50 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-white';
+                        visStatusText.className = "text-amber-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse";
                     } else if (data.current_mode === 'LF' && data.current_status !== 'BERHENTI') {
-                        visTruck.className = 'w-24 h-24 bg-slate-700 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500 transform translate-y-2 border border-white/10';
+                        visTruck.className = 'w-28 h-28 bg-emerald-600/90 rounded-3xl shadow-[0_0_50px_rgba(5,150,105,0.4)] flex items-center justify-center transition-all duration-500 transform translate-y-2 border border-emerald-400/50 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-white';
+                        visStatusText.className = "text-emerald-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse";
                     } else {
-                        visTruck.className = 'w-24 h-24 bg-slate-800 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500 transform scale-100 border border-white/10';
+                        visTruck.className = 'w-28 h-28 bg-slate-800/80 rounded-3xl shadow-2xl flex items-center justify-center transition-all duration-500 transform scale-100 border border-white/10 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-slate-300';
+                        visStatusText.className = "text-slate-400 font-mono text-xs font-bold uppercase tracking-[0.3em]";
                     }
                 }
                 
-                addLog(`Status berubah: ${data.current_status}`);
+                addLog(`Status berubah: <span class="font-bold">${data.current_status}</span>`);
             }
         });
 
-        // Listener Data Sensor (Struktur Firebase Node: 'sensors')
+        // Listener Data Sensor
         onValue(ref(db, 'sensors'), (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -317,15 +345,16 @@
             if (bar && text) {
                 const percentage = Math.min(100, (val / 100) * 100);
                 bar.style.width = `${percentage}%`;
-                text.textContent = `${val} cm`;
+                
+                // Menampilkan murni angka tanpa satuan 'cm'
+                text.textContent = val;
 
-                // Pergantian warna berdasarkan jarak
                 if (val < 15) {
-                    bar.className = 'h-full bg-red-500 transition-all duration-500';
+                    bar.className = 'h-full bg-gradient-to-r from-red-600 to-rose-400 shadow-[0_0_15px_rgba(225,29,72,0.8)] transition-all duration-500 rounded-full';
                 } else if (val < 40) {
-                    bar.className = 'h-full bg-yellow-400 transition-all duration-500';
+                    bar.className = 'h-full bg-gradient-to-r from-amber-500 to-yellow-300 shadow-[0_0_15px_rgba(245,158,11,0.8)] transition-all duration-500 rounded-full';
                 } else {
-                    bar.className = 'h-full bg-blue-500 transition-all duration-500';
+                    bar.className = 'h-full bg-gradient-to-r from-emerald-500 to-teal-300 shadow-[0_0_15px_rgba(16,185,129,0.8)] transition-all duration-500 rounded-full';
                 }
             }
         }
@@ -338,8 +367,8 @@
             if (binsCountEl.textContent != count) {
                 binsCountEl.textContent = count;
                 binsCountEl.classList.add('count-up');
-                setTimeout(() => binsCountEl.classList.remove('count-up'), 500);
-                addLog(`Data baru: ${count} tong terhitung.`);
+                setTimeout(() => binsCountEl.classList.remove('count-up'), 400);
+                addLog(`Logistik baru: ${count} unit tercatat.`);
             }
         });
     </script>
@@ -351,12 +380,15 @@
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             
-            document.querySelectorAll('.nav-btn, .desktop-nav-btn').forEach(btn => {
+            document.querySelectorAll('.active-nav, .desktop-nav-active').forEach(btn => {
                 btn.classList.remove('active-nav', 'desktop-nav-active');
-                if(btn.id.includes(tabId)) {
-                    btn.classList.add(btn.classList.contains('desktop-nav-btn') ? 'desktop-nav-active' : 'active-nav');
-                }
             });
+            
+            const mBtn = document.getElementById('m-nav-' + tabId);
+            const dBtn = document.getElementById('d-nav-' + tabId);
+            if(mBtn) mBtn.classList.add('active-nav');
+            if(dBtn) dBtn.classList.add('desktop-nav-active');
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -373,12 +405,12 @@
             const logsContainer = document.getElementById('activity-logs');
             const time = new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
             const logEntry = `
-                <div class="flex gap-3 text-xs items-start animate-fadeIn border-l-2 border-emerald-100 pl-3 py-1">
-                    <span class="text-emerald-500 font-mono font-bold whitespace-nowrap">${time}</span>
-                    <span class="text-gray-600 leading-relaxed">${msg}</span>
+                <div class="flex gap-4 text-sm items-start bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
+                    <span class="text-emerald-600 font-mono font-bold whitespace-nowrap bg-emerald-50 px-2 py-0.5 rounded-md">${time}</span>
+                    <span class="text-slate-600 font-medium">${msg}</span>
                 </div>`;
             logsContainer.insertAdjacentHTML('afterbegin', logEntry);
-            if(logsContainer.children.length > 15) logsContainer.removeChild(logsContainer.lastChild);
+            if(logsContainer.children.length > 10) logsContainer.removeChild(logsContainer.lastChild);
         }
 
         const binSchedules = [
@@ -386,19 +418,23 @@
             { id: 2, location: 'Blok A', schedule: '10:00', icon: 'map-pin' },
             { id: 3, location: 'Pasar Kronjo', schedule: '13:00', icon: 'map-pin' }
         ];
+        
         document.getElementById('schedule-list').innerHTML = binSchedules.map(item => `
-            <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex justify-between items-center group transition-transform">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <div class="glass-card p-6 rounded-3xl flex justify-between items-center group hover:-translate-y-1 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-emerald-500/10">
+                <div class="flex items-center gap-5">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-emerald-50 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-inner">
                         <i data-lucide="${item.icon}" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h4 class="font-bold text-gray-800">${item.location}</h4>
-                        <p class="text-xs text-gray-400 font-medium">Estimasi: ${item.schedule}</p>
+                        <h4 class="font-extrabold text-slate-800 text-lg">${item.location}</h4>
+                        <p class="text-sm text-slate-500 font-medium mt-0.5 flex items-center gap-1">
+                            <i data-lucide="clock" class="w-3 h-3"></i> ${item.schedule}
+                        </p>
                     </div>
                 </div>
             </div>
         `).join('');
+        
         lucide.createIcons();
     </script>
 </body>
