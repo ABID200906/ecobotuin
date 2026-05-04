@@ -167,6 +167,7 @@
                     </div>
                 </div>
 
+                <!-- Bagian Visualisasi Sistem yang Diperbarui -->
                 <div class="lg:col-span-8 space-y-6">
                     <div class="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm h-full flex flex-col">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
@@ -174,14 +175,46 @@
                                 <h4 class="font-bold text-lg text-gray-800">Visualisasi Sistem</h4>
                                 <p class="text-xs text-gray-400">Data sensor real-time dari Firebase</p>
                             </div>
-                            <span class="flex items-center gap-2 text-xs text-green-600 font-bold bg-green-50 px-3 py-1.5 rounded-full">
-                                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> LIVE SENSOR
+                            <span class="flex items-center gap-2 text-xs text-blue-600 font-bold bg-blue-50 px-3 py-1.5 rounded-full">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> LIVE SYSTEM
                             </span>
                         </div>
-                        <div class="flex-1 bg-slate-50 rounded-[2rem] border border-gray-200 relative flex items-center justify-center min-h-[400px]">
-                            <div class="text-center p-10">
-                                <i data-lucide="info" class="w-12 h-12 text-gray-300 mx-auto mb-4"></i>
-                                <p class="text-gray-400 text-sm">Dashboard ini terhubung langsung ke robot <br> menggunakan <b>eco-bot-75f49</b> database.</p>
+                        
+                        <div class="flex-1 bg-slate-900 rounded-[2rem] border border-gray-800 relative flex flex-col p-6 min-h-[400px] overflow-hidden">
+                            <!-- Sensor Ultrasonik -->
+                            <div class="grid grid-cols-3 gap-4 mb-8">
+                                <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                                    <p class="text-gray-400 text-[10px] uppercase font-bold mb-2">Sensor Kiri</p>
+                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
+                                        <div id="bar-kiri" class="h-full bg-blue-500 w-[0%] transition-all duration-500"></div>
+                                    </div>
+                                    <p id="val-kiri" class="text-white font-mono text-sm">0 cm</p>
+                                </div>
+                                <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                                    <p class="text-gray-400 text-[10px] uppercase font-bold mb-2">Sensor Depan</p>
+                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
+                                        <div id="bar-depan" class="h-full bg-blue-500 w-[0%] transition-all duration-500"></div>
+                                    </div>
+                                    <p id="val-depan" class="text-white font-mono text-sm">0 cm</p>
+                                </div>
+                                <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                                    <p class="text-gray-400 text-[10px] uppercase font-bold mb-2">Sensor Kanan</p>
+                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
+                                        <div id="bar-kanan" class="h-full bg-blue-500 w-[0%] transition-all duration-500"></div>
+                                    </div>
+                                    <p id="val-kanan" class="text-white font-mono text-sm">0 cm</p>
+                                </div>
+                            </div>
+
+                            <!-- Animasi Posisi / Status -->
+                            <div class="flex-1 relative flex items-center justify-center bg-slate-800/50 rounded-xl border border-white/5">
+                                <div class="absolute top-4 left-0 right-0 text-center">
+                                    <span id="vis-status-text" class="text-blue-400 font-mono text-sm uppercase tracking-widest animate-pulse">Menunggu Data...</span>
+                                </div>
+
+                                <div id="vis-truck" class="w-24 h-24 bg-slate-700 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-700 transform border border-white/10">
+                                    <i data-lucide="truck" class="w-12 h-12 text-white"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -211,7 +244,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Konfigurasi yang kamu berikan
         const firebaseConfig = {
           apiKey: "AIzaSyBhUKFmtSgaUO5whIUcYMr58acqZ1PO_M0",
           authDomain: "eco-bot-75f49.firebaseapp.com",
@@ -233,23 +265,70 @@
             const modeEl = document.getElementById('robot-mode');
             const card = document.getElementById('admin-status-card');
             const indicator = document.getElementById('connection-indicator');
+            
+            // Elemen Visualisasi
+            const visTruck = document.getElementById('vis-truck');
+            const visStatusText = document.getElementById('vis-status-text');
 
             if (data) {
                 statusEl.textContent = data.current_status || "Standby";
                 modeEl.textContent = data.current_mode || "LF";
                 indicator.textContent = "ONLINE";
-                indicator.classList.replace('bg-white/10', 'bg-emerald-500/20');
+                indicator.classList.replace('bg-white/10', 'bg-blue-500/20');
                 
-                // Ubah warna kartu jika sedang bekerja
                 if (data.current_status === 'AMBIL' || data.current_status === 'BUANG') {
-                    card.classList.replace('bg-slate-900', 'bg-emerald-900');
+                    card.classList.replace('bg-slate-900', 'bg-blue-900');
                 } else {
                     card.className = card.className.replace(/bg-\w+-900/, 'bg-slate-900');
+                }
+                
+                // Update Animasi Visualisasi
+                if (visTruck && visStatusText) {
+                    visStatusText.textContent = `SYSTEM: ${data.current_status || 'STANDBY'}`;
+
+                    if (data.current_status === 'AMBIL') {
+                        visTruck.className = 'w-24 h-24 bg-blue-600 rounded-2xl shadow-[0_0_30px_rgba(37,99,235,0.4)] flex items-center justify-center transition-all duration-500 transform scale-110 border border-transparent';
+                    } else if (data.current_status === 'BUANG') {
+                        visTruck.className = 'w-24 h-24 bg-yellow-600 rounded-2xl shadow-[0_0_30px_rgba(202,138,4,0.4)] flex items-center justify-center transition-all duration-500 transform -translate-y-4 border border-transparent';
+                    } else if (data.current_mode === 'LF' && data.current_status !== 'BERHENTI') {
+                        visTruck.className = 'w-24 h-24 bg-slate-700 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500 transform translate-y-2 border border-white/10';
+                    } else {
+                        visTruck.className = 'w-24 h-24 bg-slate-800 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500 transform scale-100 border border-white/10';
+                    }
                 }
                 
                 addLog(`Status berubah: ${data.current_status}`);
             }
         });
+
+        // Listener Data Sensor (Struktur Firebase Node: 'sensors')
+        onValue(ref(db, 'sensors'), (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                updateSensorVisual('kiri', data.kiri || 0);
+                updateSensorVisual('depan', data.depan || 0);
+                updateSensorVisual('kanan', data.kanan || 0);
+            }
+        });
+
+        function updateSensorVisual(pos, val) {
+            const bar = document.getElementById(`bar-${pos}`);
+            const text = document.getElementById(`val-${pos}`);
+            if (bar && text) {
+                const percentage = Math.min(100, (val / 100) * 100);
+                bar.style.width = `${percentage}%`;
+                text.textContent = `${val} cm`;
+
+                // Pergantian warna berdasarkan jarak
+                if (val < 15) {
+                    bar.className = 'h-full bg-red-500 transition-all duration-500';
+                } else if (val < 40) {
+                    bar.className = 'h-full bg-yellow-400 transition-all duration-500';
+                } else {
+                    bar.className = 'h-full bg-blue-500 transition-all duration-500';
+                }
+            }
+        }
 
         // Listener Counter Sampah
         onValue(ref(db, 'statistics/total_sampah'), (snapshot) => {
@@ -302,7 +381,6 @@
             if(logsContainer.children.length > 15) logsContainer.removeChild(logsContainer.lastChild);
         }
 
-        // Render Jadwal (Data Statis)
         const binSchedules = [
             { id: 1, location: 'Taman Kota', schedule: '08:00', icon: 'map-pin' },
             { id: 2, location: 'Blok A', schedule: '10:00', icon: 'map-pin' },
