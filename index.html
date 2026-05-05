@@ -91,8 +91,9 @@
 
     <main class="max-w-7xl mx-auto p-4 md:p-8">
         
-        <!-- 1. Halaman Beranda -->
-        <section id="home" class="tab-content active space-y-8">
+<!-- 1. Halaman Beranda -->
+        <section id="home" class="tab-content active space-y-16 pb-12">
+            <!-- Hero Section -->
             <div class="grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
                 <div class="space-y-8 order-2 lg:order-1">
                     <div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-700 px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-widest shadow-sm">
@@ -111,7 +112,7 @@
                     </div>
                 </div>
                 
-                <div class="relative order-1 lg:order-2 perspective-1000">
+                <div class="relative order-1 lg:order-2">
                     <div class="absolute -inset-4 bg-gradient-to-tr from-emerald-400 to-teal-200 rounded-[3rem] rotate-6 opacity-20 blur-2xl"></div>
                     <div class="relative glass-card rounded-[2.5rem] overflow-hidden aspect-[4/3] p-2">
                         <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover rounded-[2rem]" alt="Smart City Cleanup">
@@ -119,8 +120,104 @@
                     </div>
                 </div>
             </div>
-        </section>
 
+            <!-- Latar Belakang & Masalah -->
+            <div class="glass-card p-8 md:p-12 rounded-[3rem] border-emerald-100">
+                <div class="max-w-3xl">
+                    <h3 class="text-3xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                        <i data-lucide="alert-circle" class="text-emerald-500"></i> Latar Belakang
+                    </h3>
+                    <div class="space-y-4 text-slate-600 leading-relaxed text-lg">
+                        <p>
+                            Pertumbuhan populasi perkotaan yang pesat berbanding lurus dengan meningkatnya volume sampah harian. Sistem pengangkutan konvensional seringkali tidak efisien karena jadwal yang tidak teratur dan keterbatasan tenaga kerja.
+                        </p>
+                        <p class="font-medium text-emerald-700">
+                            EcoBot hadir sebagai solusi otomasi pengumpulan sampah yang bekerja secara mandiri (autonomous), mendeteksi lokasi penumpukan, dan mengangkutnya ke pusat pembuangan secara sistematis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fitur Unggulan -->
+            <div class="space-y-8">
+                <h3 class="text-3xl font-black text-center text-slate-800">Fitur Unggulan</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-card p-8 rounded-[2rem] hover:border-emerald-300 transition-colors group">
+                        <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="Zap" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Otomasi Penuh</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">Berjalan secara mandiri mengikuti jalur (Line Follower) tanpa perlu kendali manual terus-menerus.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-[2rem] hover:border-emerald-300 transition-colors group">
+                        <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="eye" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Deteksi Presisi</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">Dilengkapi sensor ultrasonik di 3 sisi untuk menghindari rintangan dan mendeteksi posisi tong sampah secara akurat.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-[2rem] hover:border-emerald-300 transition-colors group">
+                        <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="cloud-lightning" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-3">Monitoring Real-time</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">Terhubung ke Cloud Firebase untuk pemantauan status robot dan log aktivitas secara langsung dari web.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fungsi Robot -->
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-slate-900 rounded-[2.5rem] p-8 md:p-12 text-white">
+                    <h3 class="text-3xl font-black mb-8 italic">Fungsi Utama Robot</h3>
+                    <ul class="space-y-6">
+                        <li class="flex gap-4">
+                            <div class="mt-1 w-6 h-6 bg-emerald-500 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">1</div>
+                            <p class="text-slate-300"><span class="text-white font-bold">Patroli Rutin:</span> Menyisir area publik sesuai jalur yang telah ditentukan untuk mencari tong sampah yang siap angkut.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <div class="mt-1 w-6 h-6 bg-emerald-500 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">2</div>
+                            <p class="text-slate-300"><span class="text-white font-bold">Pengangkutan Otomatis:</span> Mekanisme capit/angkut yang mengangkat sampah tanpa bantuan manusia.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <div class="mt-1 w-6 h-6 bg-emerald-500 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">3</div>
+                            <p class="text-slate-300"><span class="text-white font-bold">Manajemen Logistik:</span> Menghitung jumlah sampah yang dikumpulkan untuk kebutuhan data statistik kebersihan kota.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Komponen yang Digunakan -->
+                <div class="glass-card p-8 md:p-12 rounded-[2.5rem]">
+                    <h3 class="text-3xl font-black text-slate-800 mb-8">Arsitektur Komponen</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">Otak Sistem</p>
+                            <p class="font-bold text-slate-800 text-sm">ESP32 / Arduino</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">Sensor Jarak</p>
+                            <p class="font-bold text-slate-800 text-sm">HC-SR04 Ultrasonic</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">Navigasi</p>
+                            <p class="font-bold text-slate-800 text-sm">Infrared Line Sensor</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">Penggerak</p>
+                            <p class="font-bold text-slate-800 text-sm">Servo & DC Motor</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">Konektivitas</p>
+                            <p class="font-bold text-slate-800 text-sm">WiFi (Firebase RTDB)</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="text-[10px] font-bold text-emerald-600 uppercase mb-1">Power</p>
+                            <p class="font-bold text-slate-800 text-sm">Li-ion Battery 18650</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- 2. Halaman Jadwal -->
         <section id="user" class="tab-content space-y-8">
             <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">Jadwal Penjemputan</h2>
