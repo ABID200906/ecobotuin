@@ -3,158 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EcoBot - Sustainable Smart Waste Management</title>
+    <title>EcoBot - Sistem Pengelolaan Sampah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --accent: #f59e0b;
-        }
-
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
             background-color: #f8fafc;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 35%),
-                radial-gradient(circle at 100% 100%, rgba(245, 158, 11, 0.05) 0%, transparent 35%);
-            background-attachment: fixed;
+            background-image: radial-gradient(circle at top right, #ecfdf5, transparent 40%), 
+                              radial-gradient(circle at bottom left, #f0fdf4, transparent 40%);
         }
 
-        /* Smooth Tab Transition */
-        .tab-content { display: none; opacity: 0; transform: translateY(15px); transition: all 0.5s ease; }
-        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
+        .tab-content { display: none; }
+        .tab-content.active { 
+            display: block; 
+            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
-        /* Advanced Glassmorphism */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active-nav { color: #059669; }
+        .desktop-nav-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            backdrop-filter: blur(8px);
+        }
+
         .glass-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         }
 
         .glass-panel-dark {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float { animation: float 6s ease-in-out infinite; }
+        .count-up { animation: pop 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        .text-gradient {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); color: #34d399; }
+            100% { transform: scale(1); }
         }
 
-        .nav-active {
-            position: relative;
-            color: var(--primary-dark);
-        }
-        .nav-active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 20px;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+        #activity-logs::-webkit-scrollbar { width: 4px; }
+        #activity-logs::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="text-slate-900 pb-24 md:pb-0">
+<body class="text-slate-900 pb-20 md:pb-0 min-h-screen">
 
-    <!-- Navbar Modern -->
-    <header class="fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-8">
-        <nav class="max-w-6xl mx-auto glass-card rounded-3xl px-6 py-3 flex justify-between items-center border-white/80 shadow-xl">
-            <div class="flex items-center gap-3 group cursor-pointer">
-                <div class="w-10 h-10 bg-gradient-to-tr from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg group-hover:rotate-6 transition-transform">
-                    <i data-lucide="leaf" class="w-5 h-5"></i>
-                </div>
-                <div class="hidden sm:block">
-                    <h1 class="text-sm font-black tracking-tighter text-slate-800 uppercase">EcoBot <span class="text-emerald-500">v2.0</span></h1>
-                    <p class="text-[9px] font-bold text-slate-400 leading-none">Smart Sustainability</p>
+    <!-- Header & Desktop Nav -->
+    <header class="bg-white/70 backdrop-blur-xl sticky top-0 z-40 border-b border-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center text-white font-black shadow-lg shadow-emerald-200">EB</div>
+                <div>
+                    <h1 class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] mb-0.5">EcoBot System</h1>
+                    <p id="real-time-clock" class="text-xl font-bold leading-none tracking-tight text-slate-800">00:00:00</p>
                 </div>
             </div>
-
-            <div class="hidden md:flex items-center gap-8">
-                <button onclick="switchTab('home')" id="d-nav-home" class="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-colors nav-active">Home</button>
-                <button onclick="switchTab('user')" id="d-nav-user" class="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-colors">Schedules</button>
-                <button onclick="switchTab('admin')" id="d-nav-admin" class="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-colors">Monitoring</button>
-            </div>
+            
+            <nav class="hidden md:flex items-center gap-1 bg-slate-100/50 p-1 rounded-2xl border border-white">
+                <button onclick="switchTab('home')" class="desktop-nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all desktop-nav-active" id="d-nav-home">Beranda</button>
+                <button onclick="switchTab('user')" class="desktop-nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-white/60" id="d-nav-user">Jadwal</button>
+                <button onclick="switchTab('admin')" class="desktop-nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:bg-white/60" id="d-nav-admin">Monitor</button>
+            </nav>
 
             <div class="flex items-center gap-4">
-                <div class="text-right hidden xs:block">
-                    <p id="real-time-clock" class="text-sm font-black text-slate-800 leading-none">00:00</p>
-                    <p id="real-date" class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-1">-- --- ----</p>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200 text-slate-400 hover:text-emerald-500 cursor-pointer transition-colors relative">
+                <div id="real-date" class="hidden lg:block text-xs font-semibold text-slate-500 border-r pr-4 border-slate-200">-- --- ----</div>
+                <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 border border-slate-200 hover:bg-slate-200 transition cursor-pointer">
                     <i data-lucide="bell" class="w-4 h-4"></i>
-                    <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 pt-32 pb-12">
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
         
-        <!-- SECTION 1: HOME -->
-        <section id="home" class="tab-content active space-y-24">
-            <!-- Hero with Animated Element -->
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8 animate-in fade-in slide-in-from-left duration-1000">
-                    <div class="inline-flex items-center gap-2 bg-emerald-100/50 border border-emerald-200 text-emerald-700 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
-                        <span class="relative flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                        </span>
-                        Next-Gen Robotics 2026
+<!-- 1. Halaman Beranda -->
+        <section id="home" class="tab-content active space-y-16 pb-16">
+            <!-- Hero Section dengan Background Glow -->
+            <div class="grid lg:grid-cols-2 gap-12 items-center min-h-[75vh] relative">
+                <div class="space-y-8 order-2 lg:order-1 relative z-10">
+                    <div class="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 text-amber-700 px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-sm">
+                        <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span> Solar Powered System
                     </div>
-                    <h2 class="text-6xl md:text-8xl font-extrabold text-slate-900 leading-[0.9] tracking-tighter">
-                        Eco-Friendly <br/><span class="text-gradient italic">Intelligence.</span>
+                    <h2 class="text-5xl md:text-7xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
+                        Bersihkan Kota dengan <span class="text-emerald-600 italic">Energi Surya</span>
                     </h2>
-                    <p class="text-slate-500 text-lg md:text-xl font-medium leading-relaxed max-w-md">
-                        Masa depan kebersihan kota dimulai di sini. EcoBot menggunakan energi matahari untuk navigasi cerdas tanpa emisi.
+                    <p class="text-slate-500 text-lg md:text-xl leading-relaxed md:max-w-lg font-medium">
+                        EcoBot kini lebih mandiri dengan integrasi panel fotovoltaik, mengisi daya secara alami di bawah sinar matahari.
                     </p>
                     <div class="flex flex-wrap gap-4 pt-4">
-                        <button onclick="switchTab('admin')" class="group bg-slate-900 hover:bg-emerald-600 text-white px-8 py-4 rounded-2xl font-bold shadow-2xl transition-all flex items-center gap-3 active:scale-95">
-                            Launch Dashboard
-                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        <button onclick="switchTab('admin')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-emerald-200 transition-all active:scale-95 flex items-center gap-3">
+                            <i data-lucide="zap" class="w-5 h-5 text-amber-300 fill-amber-300"></i> Pantau Energi & Robot
                         </button>
                     </div>
                 </div>
-
-                <div class="relative flex justify-center items-center">
-                    <div class="absolute w-72 h-72 bg-emerald-400 opacity-20 blur-[100px] rounded-full"></div>
-                    <div class="relative animate-float">
-                        <div class="glass-card p-4 rounded-[3rem] shadow-2xl border-white/40">
-                            <img src="https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?auto=format&fit=crop&q=80&w=800" 
-                                 class="w-full h-[400px] object-cover rounded-[2.5rem]" alt="Solar Energy">
-                            <div class="absolute top-10 right-10 glass-card p-4 rounded-2xl shadow-xl flex items-center gap-3 border-emerald-500/20">
-                                <div class="w-10 h-10 bg-amber-400 rounded-xl flex items-center justify-center text-white shadow-inner">
-                                    <i data-lucide="sun" class="w-6 h-6 animate-spin-slow"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] font-black text-slate-400 uppercase">Power Output</p>
-                                    <p class="text-lg font-black text-slate-800 tracking-tighter italic">98% Efficient</p>
+                
+                <!-- Ilustrasi Robot & Surya -->
+                <div class="relative order-1 lg:order-2 group">
+                    <div class="absolute -inset-10 bg-gradient-to-tr from-amber-400/20 to-emerald-400/20 rounded-full blur-3xl opacity-50 group-hover:opacity-80 transition duration-1000"></div>
+                    <div class="relative glass-card rounded-[3rem] overflow-hidden p-3 transform group-hover:rotate-1 transition-transform duration-500">
+                        <div class="relative rounded-[2.5rem] overflow-hidden aspect-square lg:aspect-[4/3]">
+                            <img src="https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover" alt="Solar Energy">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-8 left-8">
+                                <div class="flex items-center gap-3 text-white">
+                                    <div class="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+                                        <i data-lucide="sun" class="w-6 h-6 animate-[spin_4s_linear_infinite]"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-amber-400 uppercase tracking-widest">Power Source</p>
+                                        <p class="text-xl font-black italic">100% Green Energy</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -162,169 +135,259 @@
                 </div>
             </div>
 
-            <!-- Features Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="glass-card p-8 rounded-[2.5rem] hover:border-emerald-300 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all">
-                        <i data-lucide="zap" class="w-7 h-7"></i>
+            <!-- Latar Belakang: Masalah & Energi Ramah Lingkungan -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-10 rounded-[3rem] border-emerald-100">
+                    <h3 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                        <i data-lucide="leaf" class="text-emerald-500"></i> Mengapa Energi Surya?
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Robot konvensional seringkali membebani jaringan listrik kota. Dengan mengintegrasikan <strong>Panel Surya Monokristalin</strong>, EcoBot mampu mengurangi jejak karbon secara signifikan.
+                    </p>
+                    <div class="flex items-center gap-4 bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
+                        <i data-lucide="check-circle" class="text-emerald-600 w-5 h-5 flex-shrink-0"></i>
+                        <p class="text-sm font-bold text-emerald-800 uppercase tracking-tight">Otonomi Energi Tanpa Kabel (Wireless)</p>
                     </div>
-                    <h3 class="text-xl font-black text-slate-800 mb-2">Solar Core</h3>
-                    <p class="text-sm text-slate-500 font-medium leading-relaxed">Beroperasi mandiri dengan energi matahari sepanjang hari.</p>
                 </div>
-                <div class="glass-card p-8 rounded-[2.5rem] hover:border-emerald-300 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-500 group-hover:text-white transition-all">
-                        <i data-lucide="radar" class="w-7 h-7"></i>
+
+                <div class="glass-card p-10 rounded-[3rem] border-amber-100">
+                    <h3 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                        <i data-lucide="alert-triangle" class="text-amber-500"></i> Solusi Kebersihan
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed mb-6">
+                        Masalah tumpukan sampah di titik yang sulit dijangkau kabel listrik kini teratasi. EcoBot bisa beroperasi di taman atau area terbuka tanpa perlu stasiun pengisian daya manual.
+                    </p>
+                    <div class="flex items-center gap-4 bg-amber-50 p-4 rounded-2xl border border-amber-100 text-amber-800">
+                        <i data-lucide="trending-up" class="text-amber-600 w-5 h-5 flex-shrink-0"></i>
+                        <p class="text-sm font-bold uppercase tracking-tight">Efisiensi Biaya Operasional 40%</p>
                     </div>
-                    <h3 class="text-xl font-black text-slate-800 mb-2">Smart LIDAR</h3>
-                    <p class="text-sm text-slate-500 font-medium leading-relaxed">Sensor presisi tinggi untuk navigasi kota tanpa hambatan.</p>
                 </div>
-                <div class="glass-card p-8 rounded-[2.5rem] hover:border-emerald-300 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-6 group-hover:bg-amber-500 group-hover:text-white transition-all">
-                        <i data-lucide="wifi" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-800 mb-2">Cloud Sync</h3>
-                    <p class="text-sm text-slate-500 font-medium leading-relaxed">Integrasi Firebase untuk sinkronisasi data real-time.</p>
+            </div>
+
+            <!-- Fitur Utama & Fungsi -->
+            <div class="space-y-8">
+                <div class="text-center space-y-2">
+                    <h3 class="text-4xl font-black text-slate-800">Teknologi Masa Depan</h3>
+                    <p class="text-slate-500 font-medium">Sinergi antara AI, Robotik, dan Energi Terbarukan</p>
                 </div>
-                <div class="glass-card p-8 rounded-[2.5rem] hover:border-emerald-300 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mb-6 group-hover:bg-rose-500 group-hover:text-white transition-all">
-                        <i data-lucide="activity" class="w-7 h-7"></i>
+                
+                <div class="grid md:grid-cols-4 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-6 rounded-[2.5rem] hover:shadow-2xl hover:shadow-emerald-500/10 transition-all group">
+                        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                            <i data-lucide="sun" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 mb-2">Solar Panel</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Panel fotovoltaik efisiensi tinggi untuk pengisian daya otomatis.</p>
                     </div>
-                    <h3 class="text-xl font-black text-slate-800 mb-2">Analytics</h3>
-                    <p class="text-sm text-slate-500 font-medium leading-relaxed">Logika cerdas yang terus belajar dari setiap rute.</p>
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-6 rounded-[2.5rem] hover:shadow-2xl hover:shadow-emerald-500/10 transition-all group">
+                        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 mb-2">Smart Logic</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Algoritma Line Follower yang dioptimalkan untuk penghematan daya.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-6 rounded-[2.5rem] hover:shadow-2xl hover:shadow-emerald-500/10 transition-all group">
+                        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                            <i data-lucide="radar" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 mb-2">360° Sensors</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Deteksi rintangan real-time dengan akurasi hingga 2cm.</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-6 rounded-[2.5rem] hover:shadow-2xl hover:shadow-emerald-500/10 transition-all group">
+                        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                            <i data-lucide="wifi" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 mb-2">Cloud Sync</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Telemetri data langsung ke Firebase untuk pengawasan jarak jauh.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daftar Komponen Hardware -->
+            <div class="bg-slate-900 rounded-[3rem] p-8 md:p-12 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-12 opacity-10">
+                    <i data-lucide="settings" class="w-64 h-64 text-white animate-[spin_20s_linear_infinite]"></i>
+                </div>
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-black text-white mb-10">Arsitektur Komponen</h3>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-emerald-500 transition-colors">
+                                <i data-lucide="battery-charging" class="w-5 h-5 text-amber-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Power Module</p>
+                                <p class="text-white font-medium text-sm">Solar Panel</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-emerald-500 transition-colors">
+                                <i data-lucide="microchip" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Controller</p>
+                                <p class="text-white font-medium text-sm">ESP32 Dual-Core WiFi</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-emerald-500 transition-colors">
+                                <i data-lucide="move" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Locomotion</p>
+                                <p class="text-white font-medium text-sm">L298N + 4x Gear Motor DC</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-emerald-500 transition-colors">
+                                <i data-lucide="scan-eye" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Obstacle Sensor</p>
+                                <p class="text-white font-medium text-sm">3x HC-SR04 Ultrasonic</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-emerald-500 transition-colors">
+                                <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Path Tracking</p>
+                                <p class="text-white font-medium text-sm">8-Ch IR Reflectance</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-emerald-500 transition-colors">
+                                <i data-lucide="box" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Actuator</p>
+                                <p class="text-white font-medium text-sm">MG996R Metal Gear Servo</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <!-- SECTION 2: SCHEDULE -->
-        <section id="user" class="tab-content space-y-12">
-            <div class="max-w-2xl">
-                <h2 class="text-4xl font-black text-slate-900 tracking-tighter">Collection <span class="text-gradient">Routes.</span></h2>
-                <p class="text-slate-500 font-medium mt-2">Daftar lokasi penjemputan sampah otomatis yang dijadwalkan hari ini.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="schedule-list">
-                <!-- Dynamically Inserted -->
-            </div>
+        
+        <!-- 2. Halaman Jadwal -->
+        <section id="user" class="tab-content space-y-8">
+            <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">Jadwal Penjemputan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="schedule-list"></div>
         </section>
 
-        <!-- SECTION 3: MONITORING (ADMIN) -->
-        <section id="admin" class="tab-content space-y-8">
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Robot Status Card -->
-                <div class="lg:col-span-1 space-y-8">
-                    <div class="glass-panel-dark p-8 rounded-[3rem] text-white relative overflow-hidden group">
-                        <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px]"></div>
-                        
-                        <div class="relative z-10 flex flex-col h-full justify-between">
+        <!-- 3. Halaman Admin (Monitoring) -->
+        <section id="admin" class="tab-content space-y-6">
+            <div class="grid lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="glass-panel-dark p-8 rounded-[2.5rem] text-white relative overflow-hidden transition-all duration-700 group" id="admin-status-card">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-blue-500/20 transition-colors duration-700"></div>
+                        <div class="relative z-10">
                             <div class="flex justify-between items-start mb-12">
                                 <div>
-                                    <p class="text-[10px] text-emerald-400 font-black uppercase tracking-[0.2em] mb-2">Operational Status</p>
-                                    <h3 id="robot-status" class="text-4xl font-black tracking-tighter">Standby</h3>
+                                    <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.2em] mb-2">Status Robot</p>
+                                    <h3 id="robot-status" class="text-3xl font-black tracking-tight drop-shadow-md">Menghubungkan...</h3>
                                 </div>
-                                <div id="connection-indicator" class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
-                                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Online</span>
-                                </div>
+                                <div id="connection-indicator" class="text-[10px] bg-white/10 px-3 py-1.5 rounded-lg border border-white/20 font-mono tracking-wider backdrop-blur-md">OFFLINE</div>
                             </div>
-
-                            <div class="space-y-6">
-                                <div class="bg-white/5 p-6 rounded-3xl border border-white/5 flex items-center justify-between">
-                                    <div>
-                                        <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Total Cleaned</p>
-                                        <div class="flex items-center gap-2">
-                                            <span id="bins-count" class="text-4xl font-black">0</span>
-                                            <span class="text-xs font-bold text-slate-500 mt-2">Units</span>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between backdrop-blur-sm">
+                                    <div class="flex items-center gap-4">
+                                        <div class="p-3 bg-slate-800 rounded-xl shadow-inner border border-white/5">
+                                            <i data-lucide="navigation" class="w-5 h-5 text-emerald-400"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Mode Aktif</p>
+                                            <p id="robot-mode" class="text-xl font-bold">-</p>
                                         </div>
                                     </div>
-                                    <div class="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400">
-                                        <i data-lucide="package-check" class="w-7 h-7"></i>
-                                    </div>
                                 </div>
-                                <div class="bg-white/5 p-6 rounded-3xl border border-white/5 flex items-center justify-between">
+
+                                <div class="bg-white/5 p-5 rounded-2xl border border-white/10 flex items-center justify-between backdrop-blur-sm">
                                     <div>
-                                        <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Active Mode</p>
-                                        <p id="robot-mode" class="text-2xl font-black italic">--</p>
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">Tong Terangkut</p>
+                                        <div class="flex items-center gap-3">
+                                            <span id="bins-count" class="text-4xl font-black text-white drop-shadow-lg">0</span>
+                                        </div>
                                     </div>
-                                    <div class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400">
-                                        <i data-lucide="navigation" class="w-7 h-7"></i>
+                                    <div class="p-4 bg-emerald-500/20 rounded-2xl border border-emerald-500/30">
+                                        <i data-lucide="package" class="w-6 h-6 text-emerald-400"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Activity Log -->
-                    <div class="glass-card p-8 rounded-[3rem]">
-                        <h4 class="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 flex items-center gap-2">
-                            <i data-lucide="history" class="w-4 h-4 text-emerald-500"></i> Event Stream
+                    <div class="glass-card p-6 rounded-[2rem]">
+                        <h4 class="font-bold text-slate-800 mb-5 flex items-center gap-2">
+                            <i data-lucide="history" class="w-4 h-4 text-slate-400"></i> Log Aktivitas
                         </h4>
-                        <div class="space-y-4 max-h-60 overflow-y-auto pr-2 custom-scrollbar" id="activity-logs">
-                            <!-- Logs -->
-                        </div>
+                        <div class="space-y-3 max-h-[250px] overflow-y-auto pr-3" id="activity-logs"></div>
                     </div>
                 </div>
 
-                <!-- Live Visualization -->
-                <div class="lg:col-span-2 space-y-8">
-                    <div class="glass-card p-8 rounded-[3rem] h-full flex flex-col">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
+                <!-- Visualisasi Sistem Glassmorphism -->
+                <div class="lg:col-span-8">
+                    <div class="glass-card p-2 rounded-[2.5rem] h-full flex flex-col">
+                        <div class="p-6 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
                             <div>
-                                <h4 class="text-2xl font-black text-slate-800 tracking-tighter">Neural Telemetry</h4>
-                                <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Real-time LiDAR Feed</p>
+                                <h4 class="font-extrabold text-xl text-slate-800 tracking-tight">Visualisasi Sistem</h4>
+                                <p class="text-sm font-medium text-slate-500 mt-1">Data telemetri real-time</p>
                             </div>
-                            <div class="flex gap-4">
-                                <div class="bg-slate-50 px-4 py-2 rounded-2xl border border-slate-200">
-                                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Battery Status</p>
-                                    <p class="text-sm font-black text-emerald-500">89% Charged</p>
-                                </div>
-                            </div>
+                            <span class="flex items-center gap-2 text-xs text-blue-700 font-bold bg-blue-100/80 px-4 py-2 rounded-xl shadow-sm border border-blue-200 backdrop-blur-sm">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(37,99,235,0.8)]"></span> LIVE METRICS
+                            </span>
                         </div>
+                        
+                        <div class="flex-1 glass-panel-dark rounded-[2rem] relative flex flex-col p-8 min-h-[450px] m-2 overflow-hidden">
+                            <!-- Background Grid Effect -->
+                            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:30px_30px] opacity-20"></div>
 
-                        <!-- System Visualization Core -->
-                        <div class="flex-1 glass-panel-dark rounded-[2.5rem] relative p-12 overflow-hidden flex flex-col gap-12">
-                            <!-- Grid BG -->
-                            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-                            
-                            <!-- Sensors -->
-                            <div class="grid grid-cols-3 gap-8 relative z-10">
-                                <div class="space-y-4">
-                                    <div class="flex justify-between items-end px-1">
-                                        <p class="text-[9px] font-black text-emerald-400 uppercase">Left</p>
-                                        <p id="val-kiri" class="text-xl font-black text-white leading-none">0</p>
+                            <!-- Sensor Indikator Modern -->
+                            <div class="grid grid-cols-3 gap-6 mb-10 relative z-10">
+                                <div class="bg-slate-800/60 rounded-2xl p-4 text-center border border-white/5 backdrop-blur-md shadow-lg">
+                                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3">Sensor Kiri</p>
+                                    <div class="h-3 bg-slate-900 rounded-full overflow-hidden mb-3 shadow-inner border border-white/5">
+                                        <div id="bar-kiri" class="h-full bg-slate-500 w-[0%] transition-all duration-700 rounded-full"></div>
                                     </div>
-                                    <div class="h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                                        <div id="bar-kiri" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 w-0 transition-all duration-700"></div>
-                                    </div>
+                                    <p id="val-kiri" class="text-white font-black text-2xl font-mono">0</p>
                                 </div>
-                                <div class="space-y-4">
-                                    <div class="flex justify-between items-end px-1">
-                                        <p class="text-[9px] font-black text-blue-400 uppercase">Front</p>
-                                        <p id="val-depan" class="text-xl font-black text-white leading-none">0</p>
+                                <div class="bg-slate-800/60 rounded-2xl p-4 text-center border border-white/5 backdrop-blur-md shadow-lg">
+                                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3">Sensor Depan</p>
+                                    <div class="h-3 bg-slate-900 rounded-full overflow-hidden mb-3 shadow-inner border border-white/5">
+                                        <div id="bar-depan" class="h-full bg-slate-500 w-[0%] transition-all duration-700 rounded-full"></div>
                                     </div>
-                                    <div class="h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                                        <div id="bar-depan" class="h-full bg-gradient-to-r from-blue-500 to-indigo-400 w-0 transition-all duration-700"></div>
-                                    </div>
+                                    <p id="val-depan" class="text-white font-black text-2xl font-mono">0</p>
                                 </div>
-                                <div class="space-y-4">
-                                    <div class="flex justify-between items-end px-1">
-                                        <p class="text-[9px] font-black text-rose-400 uppercase">Right</p>
-                                        <p id="val-kanan" class="text-xl font-black text-white leading-none">0</p>
+                                <div class="bg-slate-800/60 rounded-2xl p-4 text-center border border-white/5 backdrop-blur-md shadow-lg">
+                                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3">Sensor Kanan</p>
+                                    <div class="h-3 bg-slate-900 rounded-full overflow-hidden mb-3 shadow-inner border border-white/5">
+                                        <div id="bar-kanan" class="h-full bg-slate-500 w-[0%] transition-all duration-700 rounded-full"></div>
                                     </div>
-                                    <div class="h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                                        <div id="bar-kanan" class="h-full bg-gradient-to-r from-rose-500 to-orange-400 w-0 transition-all duration-700"></div>
-                                    </div>
+                                    <p id="val-kanan" class="text-white font-black text-2xl font-mono">0</p>
                                 </div>
                             </div>
 
-                            <!-- Visualization Area -->
-                            <div class="flex-1 border border-white/5 rounded-[2rem] bg-slate-900/50 flex flex-col items-center justify-center relative group">
+                            <!-- Animasi Posisi -->
+                            <div class="flex-1 relative flex items-center justify-center bg-slate-900/50 rounded-2xl border border-white/5 shadow-inner overflow-hidden">
+                                <div class="absolute top-6 left-0 right-0 text-center">
+                                    <span id="vis-status-text" class="text-emerald-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse">Standby...</span>
+                                </div>
+
                                 <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="w-48 h-48 border border-emerald-500/10 rounded-full animate-ping"></div>
-                                    <div class="absolute w-64 h-64 border border-white/5 rounded-full animate-spin-slow"></div>
+                                    <!-- Ring Dekoratif -->
+                                    <div class="w-48 h-48 border border-white/5 rounded-full absolute animate-[spin_10s_linear_infinite]"></div>
+                                    <div class="w-64 h-64 border border-white/5 rounded-full absolute animate-[spin_15s_linear_infinite_reverse]"></div>
                                 </div>
-                                <div id="vis-truck" class="relative z-10 w-24 h-24 bg-slate-800 rounded-3xl flex items-center justify-center shadow-2xl border border-white/10 transition-all duration-500">
-                                    <i data-lucide="truck" id="truck-icon" class="w-10 h-10 text-white/20 transition-colors"></i>
+
+                                <div id="vis-truck" class="w-28 h-28 bg-slate-800 rounded-3xl shadow-2xl flex items-center justify-center transition-all duration-700 transform border border-white/10 relative z-10 backdrop-blur-md">
+                                    <i data-lucide="truck" class="w-12 h-12 text-slate-300 transition-colors duration-500" id="truck-icon"></i>
                                 </div>
-                                <p id="vis-status-text" class="mt-8 text-[10px] font-black tracking-[0.4em] text-white/30 uppercase">Scan Active</p>
                             </div>
                         </div>
                     </div>
@@ -333,20 +396,27 @@
         </section>
     </main>
 
-    <!-- Mobile Nav -->
-    <nav class="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <div class="glass-card rounded-[2.5rem] py-4 px-8 flex justify-between items-center shadow-2xl border-white/50">
-            <button onclick="switchTab('home')" id="m-nav-home" class="p-2 nav-active"><i data-lucide="home"></i></button>
-            <button onclick="switchTab('user')" id="m-nav-user" class="p-2 text-slate-400"><i data-lucide="calendar"></i></button>
-            <button onclick="switchTab('admin')" id="m-nav-admin" class="p-2 text-slate-400"><i data-lucide="monitor"></i></button>
-        </div>
+    <!-- Bottom Nav Mobile -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-white shadow-[0_-10px_40px_rgba(0,0,0,0.05)] px-6 py-3 pb-8 flex justify-around items-center z-50">
+        <button onclick="switchTab('home')" class="flex flex-col items-center gap-1 text-slate-400 active-nav p-2 rounded-xl transition" id="m-nav-home">
+            <i data-lucide="home" class="w-6 h-6"></i>
+            <span class="text-[10px] font-bold">Home</span>
+        </button>
+        <button onclick="switchTab('user')" class="flex flex-col items-center gap-1 text-slate-400 p-2 rounded-xl transition" id="m-nav-user">
+            <i data-lucide="calendar" class="w-6 h-6"></i>
+            <span class="text-[10px] font-bold">Jadwal</span>
+        </button>
+        <button onclick="switchTab('admin')" class="flex flex-col items-center gap-1 text-slate-400 p-2 rounded-xl transition" id="m-nav-admin">
+            <i data-lucide="activity" class="w-6 h-6"></i>
+            <span class="text-[10px] font-bold">Monitor</span>
+        </button>
     </nav>
 
+    <!-- Firebase Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Firebase Config (Tetap sama sesuai API Key Anda)
         const firebaseConfig = {
           apiKey: "AIzaSyBhUKFmtSgaUO5whIUcYMr58acqZ1PO_M0",
           authDomain: "eco-bot-75f49.firebaseapp.com",
@@ -361,61 +431,98 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // UI Listeners & Updates
+        // Listener Status Robot
         onValue(ref(db, 'robot_control'), (snapshot) => {
             const data = snapshot.val();
-            if(!data) return;
-
             const statusEl = document.getElementById('robot-status');
             const modeEl = document.getElementById('robot-mode');
+            const card = document.getElementById('admin-status-card');
+            const indicator = document.getElementById('connection-indicator');
+            
             const visTruck = document.getElementById('vis-truck');
             const visStatusText = document.getElementById('vis-status-text');
             const truckIcon = document.getElementById('truck-icon');
 
-            statusEl.textContent = data.current_status || "Standby";
-            modeEl.textContent = data.current_mode || "--";
+            if (data) {
+                statusEl.textContent = data.current_status || "Standby";
+                modeEl.textContent = data.current_mode || "LF";
+                
+                indicator.textContent = "ONLINE";
+                indicator.className = "text-[10px] bg-emerald-500/20 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/30 font-mono tracking-wider backdrop-blur-md";
+                
+                if (data.current_status === 'AMBIL' || data.current_status === 'BUANG') {
+                    card.style.background = 'rgba(30, 58, 138, 0.85)';
+                } else {
+                    card.style.background = 'rgba(15, 23, 42, 0.85)';
+                }
+                
+                if (visTruck && visStatusText) {
+                    visStatusText.textContent = `SYSTEM: ${data.current_status || 'STANDBY'}`;
+                    visStatusText.className = "text-blue-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse";
 
-            // Interaktif Visualisasi
-            if (data.current_status === 'AMBIL') {
-                visTruck.className = 'relative z-10 w-24 h-24 bg-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl border border-emerald-400 transition-all scale-110';
-                truckIcon.classList.add('text-white');
-                visStatusText.textContent = "PICKING UP WASTE";
-                visStatusText.className = "mt-8 text-[10px] font-black tracking-[0.4em] text-emerald-400 animate-pulse";
-            } else if (data.current_status === 'BUANG') {
-                visTruck.className = 'relative z-10 w-24 h-24 bg-amber-600 rounded-3xl flex items-center justify-center shadow-2xl border border-amber-400 transition-all -translate-y-4';
-                truckIcon.classList.add('text-white');
-                visStatusText.textContent = "DUMPING SYSTEM";
-            } else {
-                visTruck.className = 'relative z-10 w-24 h-24 bg-slate-800 rounded-3xl flex items-center justify-center shadow-2xl border border-white/10 transition-all';
-                truckIcon.className = 'w-10 h-10 text-white/20 transition-colors';
-                visStatusText.textContent = "SCANNING PATH";
+                    if (data.current_status === 'AMBIL') {
+                        visTruck.className = 'w-28 h-28 bg-blue-600/90 rounded-3xl shadow-[0_0_50px_rgba(37,99,235,0.6)] flex items-center justify-center transition-all duration-500 transform scale-110 border border-blue-400/50 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-white';
+                    } else if (data.current_status === 'BUANG') {
+                        visTruck.className = 'w-28 h-28 bg-amber-600/90 rounded-3xl shadow-[0_0_50px_rgba(217,119,6,0.6)] flex items-center justify-center transition-all duration-500 transform -translate-y-4 border border-amber-400/50 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-white';
+                        visStatusText.className = "text-amber-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse";
+                    } else if (data.current_mode === 'LF' && data.current_status !== 'BERHENTI') {
+                        visTruck.className = 'w-28 h-28 bg-emerald-600/90 rounded-3xl shadow-[0_0_50px_rgba(5,150,105,0.4)] flex items-center justify-center transition-all duration-500 transform translate-y-2 border border-emerald-400/50 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-white';
+                        visStatusText.className = "text-emerald-400 font-mono text-xs font-bold uppercase tracking-[0.3em] animate-pulse";
+                    } else {
+                        visTruck.className = 'w-28 h-28 bg-slate-800/80 rounded-3xl shadow-2xl flex items-center justify-center transition-all duration-500 transform scale-100 border border-white/10 backdrop-blur-xl z-10';
+                        truckIcon.className = 'w-12 h-12 text-slate-300';
+                        visStatusText.className = "text-slate-400 font-mono text-xs font-bold uppercase tracking-[0.3em]";
+                    }
+                }
+                
+                addLog(`Status berubah: <span class="font-bold">${data.current_status}</span>`);
             }
-            
-            addLog(`System Status: ${data.current_status}`);
         });
 
-        // Sensor Updates
+        // Listener Data Sensor
         onValue(ref(db, 'sensors'), (snapshot) => {
             const data = snapshot.val();
-            if(!data) return;
-            const update = (pos, val) => {
-                const bar = document.getElementById(`bar-${pos}`);
-                const text = document.getElementById(`val-${pos}`);
-                const perc = Math.min(100, (val / 100) * 100);
-                bar.style.width = `${perc}%`;
-                text.textContent = val;
-            };
-            update('kiri', data.kiri);
-            update('depan', data.depan);
-            update('kanan', data.kanan);
+            if (data) {
+                updateSensorVisual('kiri', data.kiri || 0);
+                updateSensorVisual('depan', data.depan || 0);
+                updateSensorVisual('kanan', data.kanan || 0);
+            }
         });
 
+        function updateSensorVisual(pos, val) {
+            const bar = document.getElementById(`bar-${pos}`);
+            const text = document.getElementById(`val-${pos}`);
+            if (bar && text) {
+                const percentage = Math.min(100, (val / 100) * 100);
+                bar.style.width = `${percentage}%`;
+                
+                // Menampilkan murni angka tanpa satuan 'cm'
+                text.textContent = val;
+
+                if (val < 15) {
+                    bar.className = 'h-full bg-gradient-to-r from-red-600 to-rose-400 shadow-[0_0_15px_rgba(225,29,72,0.8)] transition-all duration-500 rounded-full';
+                } else if (val < 40) {
+                    bar.className = 'h-full bg-gradient-to-r from-amber-500 to-yellow-300 shadow-[0_0_15px_rgba(245,158,11,0.8)] transition-all duration-500 rounded-full';
+                } else {
+                    bar.className = 'h-full bg-gradient-to-r from-emerald-500 to-teal-300 shadow-[0_0_15px_rgba(16,185,129,0.8)] transition-all duration-500 rounded-full';
+                }
+            }
+        }
+
+        // Listener Counter Sampah
         onValue(ref(db, 'statistics/total_sampah'), (snapshot) => {
             const count = snapshot.val() || 0;
-            const el = document.getElementById('bins-count');
-            el.textContent = count;
-            el.classList.add('animate-bounce');
-            setTimeout(() => el.classList.remove('animate-bounce'), 500);
+            const binsCountEl = document.getElementById('bins-count');
+            
+            if (binsCountEl.textContent != count) {
+                binsCountEl.textContent = count;
+                binsCountEl.classList.add('count-up');
+                setTimeout(() => binsCountEl.classList.remove('count-up'), 400);
+                addLog(`Logistik baru: ${count} unit tercatat.`);
+            }
         });
     </script>
 
@@ -423,56 +530,64 @@
         lucide.createIcons();
 
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             
-            // Nav Updates
-            document.querySelectorAll('button').forEach(btn => btn.classList.remove('nav-active', 'text-emerald-600'));
-            document.querySelectorAll(`[id$="-nav-${tabId}"]`).forEach(btn => btn.classList.add('nav-active', 'text-emerald-600'));
+            document.querySelectorAll('.active-nav, .desktop-nav-active').forEach(btn => {
+                btn.classList.remove('active-nav', 'desktop-nav-active');
+            });
+            
+            const mBtn = document.getElementById('m-nav-' + tabId);
+            const dBtn = document.getElementById('d-nav-' + tabId);
+            if(mBtn) mBtn.classList.add('active-nav');
+            if(dBtn) dBtn.classList.add('desktop-nav-active');
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function updateTime() {
             const now = new Date();
-            document.getElementById('real-time-clock').textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('real-date').textContent = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            document.getElementById('real-time-clock').textContent = now.toLocaleTimeString('id-ID');
+            const dateEl = document.getElementById('real-date');
+            if(dateEl) dateEl.textContent = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
         }
         setInterval(updateTime, 1000);
         updateTime();
 
         function addLog(msg) {
-            const container = document.getElementById('activity-logs');
-            const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            const log = `<div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/5 opacity-0 animate-in fade-in duration-500 slide-in-from-right">
-                <span class="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg">${time}</span>
-                <span class="text-[11px] font-bold text-slate-300">${msg}</span>
-            </div>`;
-            container.insertAdjacentHTML('afterbegin', log);
-            if(container.children.length > 8) container.removeChild(container.lastChild);
+            const logsContainer = document.getElementById('activity-logs');
+            const time = new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+            const logEntry = `
+                <div class="flex gap-4 text-sm items-start bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
+                    <span class="text-emerald-600 font-mono font-bold whitespace-nowrap bg-emerald-50 px-2 py-0.5 rounded-md">${time}</span>
+                    <span class="text-slate-600 font-medium">${msg}</span>
+                </div>`;
+            logsContainer.insertAdjacentHTML('afterbegin', logEntry);
+            if(logsContainer.children.length > 10) logsContainer.removeChild(logsContainer.lastChild);
         }
 
-        const routes = [
-            { loc: 'Taman Merdeka', time: '08:00 AM', status: 'Completed' },
-            { loc: 'Sektor 5 Housing', time: '11:30 AM', status: 'Pending' },
-            { loc: 'Pasar Modern', time: '02:00 PM', status: 'Pending' }
+        const binSchedules = [
+            { id: 1, location: 'Taman Kota', schedule: '08:00', icon: 'map-pin' },
+            { id: 2, location: 'Blok A', schedule: '10:00', icon: 'map-pin' },
+            { id: 3, location: 'Pasar Kronjo', schedule: '13:00', icon: 'map-pin' }
         ];
-
-        document.getElementById('schedule-list').innerHTML = routes.map(r => `
-            <div class="glass-card p-8 rounded-[3rem] hover:shadow-2xl transition-all cursor-pointer group border-white/60">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-inner">
-                        <i data-lucide="map-pin" class="w-6 h-6"></i>
+        
+        document.getElementById('schedule-list').innerHTML = binSchedules.map(item => `
+            <div class="glass-card p-6 rounded-3xl flex justify-between items-center group hover:-translate-y-1 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-emerald-500/10">
+                <div class="flex items-center gap-5">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-emerald-50 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-inner">
+                        <i data-lucide="${item.icon}" class="w-6 h-6"></i>
                     </div>
-                    <span class="text-[10px] font-black uppercase tracking-widest ${r.status === 'Completed' ? 'text-emerald-500' : 'text-amber-500'} bg-slate-50 px-3 py-1 rounded-full border border-slate-100">${r.status}</span>
-                </div>
-                <h4 class="text-xl font-black text-slate-800">${r.loc}</h4>
-                <div class="flex items-center gap-2 mt-2 text-slate-400">
-                    <i data-lucide="clock" class="w-4 h-4"></i>
-                    <p class="text-xs font-bold uppercase tracking-widest">${r.time}</p>
+                    <div>
+                        <h4 class="font-extrabold text-slate-800 text-lg">${item.location}</h4>
+                        <p class="text-sm text-slate-500 font-medium mt-0.5 flex items-center gap-1">
+                            <i data-lucide="clock" class="w-3 h-3"></i> ${item.schedule}
+                        </p>
+                    </div>
                 </div>
             </div>
         `).join('');
+        
         lucide.createIcons();
     </script>
 </body>
