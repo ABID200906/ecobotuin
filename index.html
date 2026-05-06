@@ -421,10 +421,11 @@
         </button>
     </nav>
 
-    <!-- Firebase Integration -->
+<!-- Firebase Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        // Tambahkan 'set' dan 'get' pada import firebase-database
+        import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBhUKFmtSgaUO5whIUcYMr58acqZ1PO_M0",
@@ -439,6 +440,38 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+
+        // --- LOGIKA RESET HARIAN ---
+        function checkAndResetDaily() {
+            const today = new Date().toLocaleDateString('id-ID'); // Format lokal, misal: "6/5/2026"
+            const dateRef = ref(db, 'statistics/last_reset_date');
+            const sampahRef = ref(db, 'statistics/total_sampah');
+
+            get(dateRef).then((snapshot) => {
+                const lastReset = snapshot.val();
+                
+                // Jika tanggal di database berbeda dengan hari ini (atau belum ada data tanggal)
+                if (lastReset !== today) {
+                    // Reset total sampah ke 0
+                    set(sampahRef, 0);
+                    // Update tanggal terakhir reset menjadi hari ini
+                    set(dateRef, today);
+                    
+                    console.log(`Hari berganti (${today}). Counter sampah direset ke 0.`);
+                    addLog("Sistem: Memulai hari baru, counter sampah direset.");
+                }
+            }).catch((error) => {
+                console.error("Gagal mengecek tanggal reset:", error);
+            });
+        }
+
+        // Jalankan pengecekan saat halaman web pertama kali dimuat
+        checkAndResetDaily();
+
+        // Jalankan pengecekan setiap 1 jam sekali (3600000 ms) saat dashboard dibiarkan terbuka
+        setInterval(checkAndResetDaily, 3600000); 
+        // ---------------------------
+
 
         // Listener Status Robot
         onValue(ref(db, 'robot_control'), (snapshot) => {
@@ -508,7 +541,6 @@
                 const percentage = Math.min(100, (val / 100) * 100);
                 bar.style.width = `${percentage}%`;
                 
-                // Menampilkan murni angka tanpa satuan 'cm'
                 text.textContent = val;
 
                 if (val < 15) {
@@ -527,10 +559,15 @@
             const binsCountEl = document.getElementById('bins-count');
             
             if (binsCountEl.textContent != count) {
-                binsCountEl.textContent = count;
-                binsCountEl.classList.add('count-up');
-                setTimeout(() => binsCountEl.classList.remove('count-up'), 400);
-                addLog(`Logistik baru: ${count} unit tercatat.`);
+                // Jangan jalankan animasi jika ini adalah proses inisialisasi awal ke 0 dari reset
+                if(count !== 0 || binsCountEl.textContent !== "0"){
+                    binsCountEl.textContent = count;
+                    binsCountEl.classList.add('count-up');
+                    setTimeout(() => binsCountEl.classList.remove('count-up'), 400);
+                    addLog(`Logistik diupdate: ${count} unit tercatat.`);
+                } else {
+                    binsCountEl.textContent = count;
+                }
             }
         });
     </script>
